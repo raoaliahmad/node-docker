@@ -7,8 +7,12 @@ WORKDIR /app
 # STEP 3:Copy our package.json file insde the image i.e in /app
 COPY package.json .
 
-# STEP 4:Will then run npm install 
-RUN npm install
+# STEP 4:Will then run npm install based on the NODE_ENV Arg
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ];\
+	then npm install; \
+	else npm install --only=production; \
+	fi
 
 # STEP 5:Copy the rest of the files into the image, 
 COPY . .
